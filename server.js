@@ -7,7 +7,7 @@ server.use(express.static('public'))
 
 //All your code goes here
 let activeSessions = {
-    w
+    
 
 
     
@@ -28,7 +28,13 @@ server.get('/newgame', (req, res)=>{
     res.send({sessionID: newID})
 })
 server.get('/gamestate', (req, res)=>{
-    
+    res.send(sessionID, query.newID)
+    if(sessionID = true) {
+        req
+        res.status(200)
+        res.send
+
+    }
 })
 //Do not remove this line. This allows the test suite to start
 //multiple instances of your server on different ports
