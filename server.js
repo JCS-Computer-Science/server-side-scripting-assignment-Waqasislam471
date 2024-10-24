@@ -28,11 +28,12 @@ server.get('/newgame', (req, res)=>{
     res.send({sessionID: newID})
 })
 server.get('/gamestate', (req, res)=>{
-    res.send(sessionID, query.newID)
-    if(sessionID = true) {
-        req
+    let id = req.query.sessionID
+    if(id) {
+        let gameState = activeSessions
         res.status(200)
-        res.send
+        res.send(gameState)
+    }else {
 
     }
 })
