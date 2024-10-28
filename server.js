@@ -32,9 +32,14 @@ server.get('/gamestate', (req, res)=>{
     if(id) {
         let gameState = activeSessions
         res.status(200)
-        res.send(gameState)
-    }else {
-
+        res.send({gameState: gameState})
+        if(gameOver = false){
+            wordToGuess = undefined
+        } else if(gameOver = true) {
+            res.send("game over")
+        }
+    }else{
+        
     }
 })
 //Do not remove this line. This allows the test suite to start
