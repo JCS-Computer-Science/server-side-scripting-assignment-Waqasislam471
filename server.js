@@ -7,7 +7,7 @@ server.use(express.static('public'))
 
 //All your code goes here
 let activeSessions = {
-    
+ 
 
 
     
@@ -15,7 +15,7 @@ let activeSessions = {
 server.get('/newgame', (req, res)=>{
     let newID = uuid.v4()
     let newGame = {
-        wordToGuess: "spike",
+        wordToGuess: "apple",
         guesses:[],
         wrongLetters: [],
         closeLetters: [],
@@ -23,24 +23,39 @@ server.get('/newgame', (req, res)=>{
         remainingGuesses: 6,
         gameOver: false
     }
+    if(req.query.answer){
+        newGame.wordToGuess = req.query.answer
+    }
     activeSessions[newID] = newGame
     res.status(201)
-    res.send({sessionID: newID})
+    res.send({sessionID: newID}) 
+    
+    
 })
 server.get('/gamestate', (req, res)=>{
     let id = req.query.sessionID
     if(id) {
-        let gameState = activeSessions
+        let gameState = activeSessions[id]
         res.status(200)
         res.send({gameState: gameState})
         if(gameOver = false){
-            wordToGuess = undefined
-        } else if(gameOver = true) {
-            res.send("game over")
+            wordToGuess = "spike"    
+        } else {
+            gameOver = true
         }
     }else{
-        
+       res.status(400).send({error: "No ID Detected"})
     }
+})
+server.post('guess', (req, res)=>{
+    let id = req.body.sessionID
+    let guess = req.body.guess
+    if(id){
+        let newGameState = 
+        res.status(201)
+        res.send({})
+    }
+
 })
 //Do not remove this line. This allows the test suite to start
 //multiple instances of your server on different ports
