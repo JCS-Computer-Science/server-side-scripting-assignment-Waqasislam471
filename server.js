@@ -7,7 +7,6 @@ server.use(express.static('public'))
 
 //All your code goes here
 let activeSessions = {
- 
 
 
     
@@ -38,22 +37,22 @@ server.get('/gamestate', (req, res)=>{
         let gameState = activeSessions[id]
         res.status(200)
         res.send({gameState: gameState})
-        if(gameOver = false){
-            wordToGuess = "spike"    
-        } else {
-            gameOver = true
-        }
     }else{
-       res.status(400).send({error: "No ID Detected"})
+       res.status(400)
+       res.send({error: "No ID Detected"})
+    }
+    if(id != activeSessions) {
+        res.status(404)
+        res.send({error: "sessionID does not mach active sessions"})
     }
 })
 server.post('guess', (req, res)=>{
     let id = req.body.sessionID
     let guess = req.body.guess
     if(id){
-        let newGameState = 
         res.status(201)
-        res.send({})
+        res.send({gameState: guess})
+        
     }
 
 })
