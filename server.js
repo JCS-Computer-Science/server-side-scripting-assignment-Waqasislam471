@@ -41,18 +41,18 @@ server.get('/gamestate', (req, res)=>{
        res.status(400)
        res.send({error: "No ID Detected"})
     }
-    if(id != activeSessions) {
-        res.status(404)
-        res.send({error: "sessionID does not mach active sessions"})
-    }
 })
-server.post('guess', (req, res)=>{
+server.post('/guess', (req, res)=>{
     let id = req.body.sessionID
     let guess = req.body.guess
+    guess = activeSessions[id]
     if(id){
         res.status(201)
         res.send({gameState: guess})
         
+    } else {
+        res.status(400)
+        res.send({error: "no id found"})
     }
 
 })
