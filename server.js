@@ -45,16 +45,40 @@ server.get('/gamestate', (req, res)=>{
 server.post('/guess', (req, res)=>{
     let id = req.body.sessionID
     let guess = req.body.guess
-    guess = activeSessions[id]
     if(id){
+        let guessArray = guess.split('')
+        let gameState = activeSessions[id]
+        for(i = 0; i < guessArray.length; i++){
+        if(guessArray[i] = newGame.wordToGuess[i]) {
+            console.log('RIGHT')
+        } else if(guessArray[i] = ) {
+
+        }
+        }
+
+        
+        let guesses = [
+            {value:guessArray[0], result:},
+            {value:guessArray[1], result:},
+            {value:guessArray[2], result:},
+            {value:guessArray[3], result:},
+            {value:guessArray[4], result:},
+        ]
+        let remaining = {
+            wrongLetters:[],
+            closeLetters:[],
+            rightLetters:[],
+            remaining: 4,
+            gameOver: false
+        }
+        
         res.status(201)
-        res.send({gameState: guess})
+        res.send({gameState: gameState})
         
     } else {
         res.status(400)
         res.send({error: "no id found"})
     }
-
 })
 //Do not remove this line. This allows the test suite to start
 //multiple instances of your server on different ports
