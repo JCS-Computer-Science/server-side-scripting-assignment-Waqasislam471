@@ -35,9 +35,14 @@ server.get('/gamestate', (req, res)=>{
     let id = req.query.sessionID
     if(id) {
         let gameState = activeSessions[id]
+        // if(id != gameState){
+        //     res.status(404)
+        //     res.send({error: "SessionID does not match any active sessions"})
+        // } else{
         res.status(200)
         res.send({gameState: gameState})
-    }else{
+        // }
+    } else {
        res.status(400)
        res.send({error: "No ID Detected"})
     }
@@ -45,41 +50,60 @@ server.get('/gamestate', (req, res)=>{
 server.post('/guess', (req, res)=>{
     let id = req.body.sessionID
     let guess = req.body.guess
-    if(id){
+    if(guess < 5 || guess > 5){
+        res.status(400)
+        res.send({error: "please state valid guess"})
+    } else if(id){
         let guessArray = guess.split('')
+        let wordArray = wordToGuess.split('')
         let gameState = activeSessions[id]
-        for(i = 0; i < guessArray.length; i++){
-        if(guessArray[i] = newGame.wordToGuess[i]) {
-            console.log('RIGHT')
-        } else if(guessArray[i] = ) {
+        let newGuess  = []
+    
+    for(j=0; j < guessArray.length; j++) {
+    for(i = 0; i < guessArray.length; i++) {
+    if(guessArray[i] = wordArray[i]){
+        console.log('RIGHT')
+    } else if(guessArray[j] = wordArray[i]){
+        console.log('CLOSE')
+    } else {
+        console.log('WRONG')
+    }
+        guesses = [
+        {value:[0], result:1}
+    ]
+    wrongLetters = [i],
+    closeLetter = [i],
+    rightLetters = [i]
+}
+    }
+    
+    res.status(201)
+        res.send({gameState: gameState.guesses.push(newGuess)})
+        } else {
+        res.status(400)
+        res.send({error: "no id found"})
+    }
 
-        }
-        }
+})
+server.delete('/reset', (req, res)=>{
+    let id = req.query.sessionID
+    if(id){
 
-        
-        let guesses = [
-            {value:guessArray[0], result:},
-            {value:guessArray[1], result:},
-            {value:guessArray[2], result:},
-            {value:guessArray[3], result:},
-            {value:guessArray[4], result:},
-        ]
-        let remaining = {
-            wrongLetters:[],
-            closeLetters:[],
-            rightLetters:[],
-            remaining: 4,
-            gameOver: false
-        }
-        
-        res.status(201)
-        res.send({gameState: gameState})
-        
     } else {
         res.status(400)
         res.send({error: "no id found"})
     }
 })
+server.delete('/delete', (req,res)=>{
+    let id = req.query.sessionID
+    if(id){
+
+    } else {
+        res.status(400)
+        res.send({error: "no id found"})
+    }
+})
+
 //Do not remove this line. This allows the test suite to start
 //multiple instances of your server on different ports
 module.exports = server;
