@@ -33,56 +33,31 @@ server.get('/newgame', (req, res)=>{
 })
 server.get('/gamestate', (req, res)=>{
     let id = req.query.sessionID
-    if(id) {
-        let gameState = activeSessions[id]
-        // if(id != gameState){
-        //     res.status(404)
-        //     res.send({error: "SessionID does not match any active sessions"})
-        // } else{
-        res.status(200)
-        res.send({gameState: gameState})
+    if(!id){
+    res.status(400)
+    res.send({error: "No ID Detected"})
+} else if(id) {
+    let gameState = activeSessions[id]
+    res.status(200)
+    res.send({gameState: gameState})
+
+    }else if(!gameState) {
+        res.status(404)
+        res.send({error: "ID does not match any active sessions"})
         // }
-    } else {
-       res.status(400)
-       res.send({error: "No ID Detected"})
     }
+    
 })
 server.post('/guess', (req, res)=>{
     let id = req.body.sessionID
     let guess = req.body.guess
-    if(guess < 5 || guess > 5){
-        res.status(400)
-        res.send({error: "please state valid guess"})
-    } else if(id){
-        let guessArray = guess.split('')
-        let wordArray = wordToGuess.split('')
-        let gameState = activeSessions[id]
-        let newGuess  = []
-    
-    for(j=0; j < guessArray.length; j++) {
-    for(i = 0; i < guessArray.length; i++) {
-    if(guessArray[i] = wordArray[i]){
-        console.log('RIGHT')
-    } else if(guessArray[j] = wordArray[i]){
-        console.log('CLOSE')
-    } else {
-        console.log('WRONG')
-    }
-        guesses = [
-        {value:[0], result:1}
-    ]
-    wrongLetters = [i],
-    closeLetter = [i],
-    rightLetters = [i]
-}
-    }
-    
-    res.status(201)
+     if(id){
+        res.status(201)
         res.send({gameState: gameState.guesses.push(newGuess)})
         } else {
         res.status(400)
         res.send({error: "no id found"})
-    }
+        }
 
 })
 server.delete('/reset', (req, res)=>{
