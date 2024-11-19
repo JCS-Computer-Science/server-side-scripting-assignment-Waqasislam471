@@ -33,18 +33,17 @@ server.get('/newgame', (req, res)=>{
 })
 server.get('/gamestate', (req, res)=>{
     let id = req.query.sessionID
-    if(!id){
-    res.status(400)
-    res.send({error: "No ID Detected"})
-} else if(id) {
+ if(!id){
+ res.status(400)
+ res.send({error: "No ID Detected"})
+
+ }else if(id) {
     let gameState = activeSessions[id]
     res.status(200)
     res.send({gameState: gameState})
-
-    }else if(!gameState) {
-        res.status(404)
-        res.send({error: "ID does not match any active sessions"})
-        // }
+}else if (!gameState){
+    res.status(404)
+    res.send({error: "id does not match any session"})
     }
     
 })
@@ -63,7 +62,18 @@ server.post('/guess', (req, res)=>{
 server.delete('/reset', (req, res)=>{
     let id = req.query.sessionID
     if(id){
-
+        let newgameState = {
+            wordToGuess: "apple",
+            guesses:[],
+            remainingGuesses:6,
+            gameOver:false,
+            wrongLetters:[],
+            closeLetters:[],
+            rightLetters:[]
+        }
+        activeSessions[id] = newgameState
+        res.status(200)
+        res.send({sessionID: id})
     } else {
         res.status(400)
         res.send({error: "no id found"})
@@ -72,7 +82,9 @@ server.delete('/reset', (req, res)=>{
 server.delete('/delete', (req,res)=>{
     let id = req.query.sessionID
     if(id){
-
+        activeSessions != id
+        res.status(204)
+        res.send({sessionID: id})
     } else {
         res.status(400)
         res.send({error: "no id found"})
