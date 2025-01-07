@@ -33,26 +33,33 @@ server.get('/newgame', (req, res)=>{
 })
 server.get('/gamestate', (req, res)=>{
     let id = req.query.sessionID
- if(!id){
- res.status(400)
- res.send({error: "No ID Detected"})
-
- }else if(id) {
+ if(id){
+    if(!activeSessions[id]){
+ res.status(404)
+ res.send({error: "id does not match any active session"})
+ 
+}else{
     let gameState = activeSessions[id]
     res.status(200)
     res.send({gameState: gameState})
-}else if (!gameState){
-    res.status(404)
-    res.send({error: "id does not match any session"})
-    }
+}
+}else if (!id){
+    res.status(400)
+    res.send({error: "No ID Detected"})
+}
     
 })
 server.post('/guess', (req, res)=>{
     let id = req.body.sessionID
     let guess = req.body.guess
      if(id){
+        if(!activeSessions[id]){
+            res.status(404)
+            res.send({error: "id does not match an active sessions"})
+        } else{
         res.status(201)
         res.send({gameState: gameState.guesses.push(newGuess)})
+        }
         } else {
         res.status(400)
         res.send({error: "no id found"})
@@ -62,6 +69,10 @@ server.post('/guess', (req, res)=>{
 server.delete('/reset', (req, res)=>{
     let id = req.query.sessionID
     if(id){
+        if(!activeSessions[id]){
+            res.status(404)
+            res.send({error: "id does not match an active sessions"})
+        }else{
         let newgameState = {
             wordToGuess: "apple",
             guesses:[],
@@ -74,6 +85,7 @@ server.delete('/reset', (req, res)=>{
         activeSessions[id] = newgameState
         res.status(200)
         res.send({sessionID: id})
+    }
     } else {
         res.status(400)
         res.send({error: "no id found"})
@@ -82,9 +94,14 @@ server.delete('/reset', (req, res)=>{
 server.delete('/delete', (req,res)=>{
     let id = req.query.sessionID
     if(id){
+        if(!activeSessions[id]){
+            res.status(404)
+            res.send({error: "id does not match an active sessions"})
+        }else{
         activeSessions != id
         res.status(204)
         res.send({sessionID: id})
+        }
     } else {
         res.status(400)
         res.send({error: "no id found"})
