@@ -73,18 +73,9 @@ server.delete('/reset', (req, res)=>{
             res.status(404)
             res.send({error: "id does not match an active sessions"})
         }else{
-        let newgameState = {
-            wordToGuess: "apple",
-            guesses:[],
-            remainingGuesses:6,
-            gameOver:false,
-            wrongLetters:[],
-            closeLetters:[],
-            rightLetters:[]
-        }
-        activeSessions[id] = newgameState
+        let gameState = activeSessions[id]
         res.status(200)
-        res.send({sessionID: id})
+        res.send({gameState: gameState})
     }
     } else {
         res.status(400)
@@ -98,7 +89,7 @@ server.delete('/delete', (req,res)=>{
             res.status(404)
             res.send({error: "id does not match an active sessions"})
         }else{
-        activeSessions != id
+        id != activeSessions[id]
         res.status(204)
         res.send({sessionID: id})
         }
